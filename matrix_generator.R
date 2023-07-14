@@ -195,8 +195,8 @@ eta_var_overall<-as.data.frame(eta_var_overall)
 eta_var_overall$stage <- rownames(eta_var_overall)
 
 
-write_csv(eta_overall, "./eta_overall.csv")
-write_csv(eta_var_overall, "./eta_var_overall.csv")
+write_csv(eta_overall, "./output/eta_overall.csv")
+write_csv(eta_var_overall, "./output/eta_var_overall.csv")
 
 
 
@@ -318,8 +318,8 @@ plot_eta_var <- data.frame(t(sapply(data2,c)))
 names(plot_eta_var)<-c("sdlg","shts_1","shts_2","shts_3","shts_4","shts_5","shts_6","shts_7")
 plot_eta_var<-bind_cols(plots,plot_eta_var)
 
-write_csv(plot_eta, "./plot_eta.csv")
-write_csv(plot_eta_var, "./plot_eta_var.csv")
+write_csv(plot_eta, "./output/plot_eta.csv")
+write_csv(plot_eta_var, "./output/plot_eta_var.csv")
 
 
 

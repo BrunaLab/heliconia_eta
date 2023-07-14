@@ -42,9 +42,9 @@ library(kableExtra)
 ```
 
 ```{r data, include=FALSE}
-eta_overall<-read_csv("./eta_overall.csv") %>% 
+eta_overall<-read_csv("./output/eta_overall.csv") %>% 
   rename(mean_years=eta_overall)
-var_overall<-read_csv("./eta_var_overall.csv") %>% 
+var_overall<-read_csv("./output/eta_var_overall.csv") %>% 
   rename(mean_years=eta_var_overall)
 
 # 
