@@ -1,0 +1,108 @@
+---
+title: "Heliconia ETA"
+date: "updated: `r Sys.Date()`"
+header-includes:
+- \AtBeginDocument{\let\maketitle\relax} # this removes default title section
+- \usepackage[default]{sourcesanspro}
+- \usepackage{fancyhdr} # modify header into left, center, right
+- \pagestyle{fancy} # cues the use of fancy headers
+- \fancyfoot{} # cues the use of fancy footer
+# month & year on header left
+- \fancyhead[L]{Heliconia ETA} 
+# name and page on header right
+- \fancyhead[R]{p. \thepage} 
+- \fancyfoot[R]{Last update `r format(Sys.time(), '%d %B %Y')`}
+# - \usepackage{setspace}{singlespace} # manipulate line spacing 
+- \usepackage{parskip} # manipulate indents and spacing before/after paragra phs 
+- \usepackage{xcolor} # changes colors of text
+# to center to top level (#) headings (my name) and change color of font
+# more info # https://www.ctan.org/pkg/sectsty
+- \usepackage{sectsty} \sectionfont{\centering\color{darkmidnightblue}}
+# to center to sub-sub-headings (###) and change color of font
+- \usepackage{sectsty} \subsectionfont{\color{darkmidnightblue}}
+# http://latexcolor.com/ to choose colors
+# define the colors used above with rgb codes
+- \definecolor{darkcerulean}{rgb}{0.03, 0.27, 0.49}
+- \definecolor{darkmidnightblue}{rgb}{0.0, 0.2, 0.4}
+
+mainfont: SourceSansPro
+geometry: margin=1in
+fontsize: 12pt
+linkcolor: blue
+urlcolor: blue
+output: pdf_document
+
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(kableExtra)
+```
+
+```{r data, include=FALSE}
+eta_overall<-read_csv("./eta_overall.csv") %>% 
+  rename(mean_years=eta_overall)
+var_overall<-read_csv("./eta_var_overall.csv") %>% 
+  rename(mean_years=eta_var_overall)
+
+# 
+# eta_overall_long<-pivot_longer(eta_overall,sdlg:shts_7,names_to = "category") %>% rename(mean_years=value)
+# var_overall_long<-pivot_longer(eta_overall,sdlg:shts_7,names_to = "category") %>% rename(mean_years=value)
+
+```
+
+
+<!-- ## H. acuminata_ stage-specific ETA.  -->
+
+
+```{r p_eta, include=FALSE}
+p1<-ggplot(eta_overall, aes(x=stage, 
+                            y=mean_years
+                            # group=stage, color=stage
+                            )) +
+  geom_line() +
+  geom_point()+
+  # theme_classic()+
+  theme_light()+
+  scale_y_continuous(breaks = seq(0,50,10))
+  # ggtitle("H. acuminata ETA")
+```
+
+<!-- ```{r plot1, echo=FALSE} -->
+<!-- p1 -->
+<!-- ``` -->
+
+
+<!-- ## H. acuminata_ variance in stage-specific ETA.  -->
+
+
+```{r p_vareta, include=FALSE}
+p2<-ggplot(var_overall, aes(x=stage, y=mean_years
+                            # , group=plot, color=plot
+                            )) +
+  geom_line() +
+  geom_point()+
+  # theme_classic()+
+  theme_light()+
+  scale_y_continuous(breaks = seq(0,12000,500))
+  # ggtitle("H. acuminata ETA")
+```
+
+<!-- ```{r plot2, echo=FALSE} -->
+<!-- p2 -->
+<!-- ``` -->
+## stage-specific ETA for _H. acuminata_ 
+### _all plots & years combined_
+```{r table1, echo=FALSE}
+eta_overall<-eta_overall %>% 
+  rename(eta_yrs=mean_years) %>% 
+  relocate(stage,.before=1)
+eta<-left_join(eta_overall,var_overall,by="stage") %>% 
+  rename(variance=mean_years) %>% 
+  mutate(eta_yrs=round(eta_yrs,2),
+         variance=round(variance,2))
+kbl(eta)
+```
+
